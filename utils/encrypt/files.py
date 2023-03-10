@@ -104,7 +104,7 @@ def calculate_result_file(message, left_channel_wav_data, psp_list, attachment_d
             # print(message[psp_index])
             if (message[bit_index] == '1'):
                 # обработка опасных граничных случаeв
-                if (int(frame, 2) - psp_list[psp_index] < 0) or (int(frame, 2) - psp_list[psp_index] > 65535):
+                if (int(frame, 2) - psp_list[psp_index] < 0) or (int(frame, 2) - psp_list[psp_index] > (2**attachment_depth)-1):
                     data = frame
                 else:
                     data = bin(
@@ -113,7 +113,7 @@ def calculate_result_file(message, left_channel_wav_data, psp_list, attachment_d
                 # print(f'измененный {psp_index} кадр: {data}\n')
             else:
                 # обработка опасных граничных случаeв
-                if (int(frame, 2) + psp_list[psp_index] < 0) or (int(frame, 2) + psp_list[psp_index] > 65535):
+                if (int(frame, 2) + psp_list[psp_index] < 0) or (int(frame, 2) + psp_list[psp_index] > (2**attachment_depth)-1):
                     data = frame
                 else:
                     data = bin(

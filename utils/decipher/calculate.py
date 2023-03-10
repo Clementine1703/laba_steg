@@ -12,16 +12,16 @@ def get_left_channel_wav_data(wav_filename):
 
         print(f'\nкол-во бит wav файла: {len(data)}')
 
-        if wav_file.getnchannels() > 1:
-            data = data[0::2]
-            print(f'\nкол-во бит левого канала wav файла: {len(data)}')
+        # if wav_file.getnchannels() > 1:
+        #     data = data[0::2]
+        #     print(f'\nкол-во бит левого канала wav файла: {len(data)}')
         return data
     
 def b2a_bin(data):
     return bin(int.from_bytes(data, 'big'))[2:].zfill(8*len(data)) if data else ''
 
 def get_message(start_container_data, result_container_data, psp_list):
-    depth = 16
+    depth = 32
     result = ''
 
     for bit_index in range(0, len(result_container_data), depth*len(psp_list)):
