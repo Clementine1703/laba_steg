@@ -20,8 +20,8 @@ def get_left_channel_wav_data(wav_filename):
 def b2a_bin(data):
     return bin(int.from_bytes(data, 'big'))[2:].zfill(8*len(data)) if data else ''
 
-def get_message(start_container_data, result_container_data, psp_list):
-    depth = 32
+def get_message(start_container_data, result_container_data, psp_list, attachment_depth):
+    depth = attachment_depth
     result = ''
 
     for bit_index in range(0, len(result_container_data), depth*len(psp_list)):
