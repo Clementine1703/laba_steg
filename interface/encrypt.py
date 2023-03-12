@@ -32,7 +32,11 @@ class Encrypt(tk.Tk):
         settings.wav_filename = filename_container
 
         #записываем экземпляр wave файла в настройки
-        settings.wav_file = files.get_wave_file_object(filename_container)
+        try:
+            settings.wav_file = files.get_wave_file_object(filename_container)
+        except wave.Error:
+            files.call_message('Необходим файл с расширением .WAV')
+            return 0
 
         #записываем содержимое левого канала wave файла
         settings.left_channel_wav_data = files.get_left_channel_wav_data(filename_container)
@@ -51,7 +55,11 @@ class Encrypt(tk.Tk):
         settings.message_filename = filename_message
         
         #запись сообщения в бинарном виде в настройки
-        settings.message = files.get_message_content(filename_message)
+        try:
+            settings.message = files.get_message_content(filename_message)
+        except TypeError:
+            files.call_message('Необходим файл с расширением .TXT')
+            return 0
 
         print(f'\nтекстовое сообщение в двоичном формате: {settings.message}\nкол-во бит: {len(settings.message)}')
 
@@ -72,7 +80,11 @@ class Encrypt(tk.Tk):
 
     @staticmethod
     def generate_psp():
-        settings.psp_list = files.generate_psp(settings.size_of_n_segment)
+        try:
+            settings.psp_list = files.generate_psp(settings.size_of_n_segment)
+        except Exception:
+            files.call_message('Рассчитайте кол-во N-сегментов')
+
 
         # settings.psp_list = [1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1]
 
@@ -87,10 +99,14 @@ class Encrypt(tk.Tk):
     def write_result():
         #открываем исхоный контейнер и записываем его параметры, для нового контейнера
         params = []
-        with wave.open(settings.wav_filename, 'rb') as wave_read:
-            print(wave_read.readframes(1))
-            params = wave_read.getparams()
-            params = list(params)
+        try:
+            with wave.open(settings.wav_filename, 'rb') as wave_read:
+                print(wave_read.readframes(1))
+                params = wave_read.getparams()
+                params = list(params)
+        except FileNotFoundError as e:
+            files.call_message('Вы не выбрали начальный файл-контейнер')
+            return e
 
 
         filename_result = filedialog.askopenfilename()

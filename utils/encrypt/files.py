@@ -14,17 +14,25 @@ def b2a_bin(data):
 
 
 def get_message_content(filename):
-    with open(filename, 'rb') as file:
-        content = file.read()
-        content = b2a_bin(content)
-        return content
+    if filename.endswith('.txt'):
+        with open(filename, 'rb') as file:
+            content = file.read() + b'\x8a' #добавляем любой символ в конец, т.к. при передаче последний символ теряется
+            content = b2a_bin(content)
+            return content
+    else:
+        raise TypeError
+        return 0
 
 # возвращает объект wave файла
 
 
 def get_wave_file_object(filename):
-    with wave.open(filename, 'rb') as file:
-        return file
+    try:
+        with wave.open(filename, 'rb') as file:
+            return file
+    except wave.Error as e:
+        raise e
+    return 0
 
 
 # возвращает данные левого канала wave-файла
@@ -49,7 +57,7 @@ def calculate_left_channel_attachment_depth(wav_filename):
         frame = wav_file.readframes(1)
         frame = b2a_bin(frame)
 
-        print(f'1 кадр сообщения: {wav_file.readframes(50)}')
+        print(f'1 кадр сообщения: {wav_file.readframes(1)}')
         attachment_depth = len(frame)
         print(f'Глубина вложения: {attachment_depth}\n')
         # if wav_file.getnchannels() > 1:
@@ -67,15 +75,19 @@ def call_message(text):
 
 # генерация списка с n псевдослучайных 1 и -1
 def generate_psp(size_of_n_segment):
-    psp_list = []
-    for i in range(size_of_n_segment):
-        if (random.getrandbits(1)):
-            psp_list.append(1)
-        else:
-            psp_list.append(-1)
-    print(psp_list)
-    print(type(settings.left_channel_wav_data))
-    return psp_list
+    if size_of_n_segment:
+        psp_list = []
+        for i in range(size_of_n_segment):
+            if (random.getrandbits(1)):
+                psp_list.append(1)
+            else:
+                psp_list.append(-1)
+        print(f'первые 10 элементов псевдослучайной последовательности: {psp_list}')
+        print(f'длина сгенерированной ПСП: {len(psp_list)}')
+        return psp_list
+    else:
+        raise Exception
+        return 0
 
 
 def calculate_result_file(message, left_channel_wav_data, psp_list, attachment_depth, size_of_n_segment):
