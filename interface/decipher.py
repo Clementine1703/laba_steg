@@ -29,7 +29,7 @@ class Decipher(tk.Tk):
         try:
             settings.start_container_left_channel_data = calculate.get_left_channel_wav_data(settings.filename_start_container)
         except wave.Error:
-            calculate.call_message('Необходим файл с расширением .wav')
+            calculate.show_info('Необходим файл с расширением .wav')
             return 0
 
         with wave.open(settings.filename_start_container, 'rb') as wave_read:
@@ -43,7 +43,7 @@ class Decipher(tk.Tk):
         try:
             settings.result_container_left_channel_data = calculate.get_left_channel_wav_data(settings.filename_result_container)
         except wave.Error:
-            calculate.call_message('Необходим файл с расширением .wav')
+            calculate.show_info('Необходим файл с расширением .wav')
             return 0
 
         with wave.open(settings.filename_result_container, 'rb') as wave_read:
@@ -58,7 +58,7 @@ class Decipher(tk.Tk):
                 settings.psp_list = [int(i) for i in psp_str[1:-1].split(',') ]
                 print(settings.psp_list)
         else:
-            calculate.call_message('необходим файл с расширением .txt')
+            calculate.show_info('необходим файл с расширением .txt')
 
     @staticmethod
     def get_message():
@@ -68,7 +68,7 @@ class Decipher(tk.Tk):
             with open(name, 'wb') as file:
                 file.write(calculate.bin_to_b2a(result))
         except:
-            calculate.call_message('Что-то пошло не так')
+            calculate.show_info('Что-то пошло не так')
 
 
 

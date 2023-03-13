@@ -7,7 +7,7 @@ class App(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.geometry('300x300')
-        self.title('Main')
+        self.title('Главная')
         buttons.create_button(
             window=self,
             text='Создание стегосистемы',

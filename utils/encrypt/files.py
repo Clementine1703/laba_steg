@@ -1,5 +1,6 @@
 import wave
 import tkinter
+import tkinter.messagebox as mb
 from utils.encrypt import settings
 import math
 import random
@@ -72,6 +73,14 @@ def call_message(text):
     window.geometry('300x300')
     message = tkinter.Label(window, text=text)
     message.pack(padx=20, pady=20)
+
+
+def show_info(message):
+    mb.showinfo('Информация', message)
+
+
+
+
 
 # генерация списка с n псевдослучайных 1 и -1
 def generate_psp(size_of_n_segment):

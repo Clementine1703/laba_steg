@@ -2,6 +2,7 @@ from utils.decipher import settings
 import math
 import wave
 import tkinter as tk
+import tkinter.messagebox as mb
 
 def get_left_channel_wav_data(wav_filename):
     try:
@@ -54,6 +55,9 @@ def call_message(text):
     window.geometry('300x300')
     message = tk.Label(window, text=text)
     message.pack(padx=20, pady=20)
+
+def show_info(message):
+    mb.showinfo('Информация', message)
 
 def bin_to_b2a(data):
     result = bytearray()
