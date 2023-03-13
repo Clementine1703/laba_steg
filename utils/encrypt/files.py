@@ -78,6 +78,9 @@ def call_message(text):
 def show_info(message):
     mb.showinfo('Информация', message)
 
+def show_error(message):
+    mb.showerror('Ошибка', message)
+
 
 
 

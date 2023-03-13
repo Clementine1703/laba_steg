@@ -1,4 +1,4 @@
-import settings
+from utils.encrypt import settings
 import math
 
 # def get_register_bit_depth(size_of_n_segment):

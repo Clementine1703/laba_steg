@@ -68,6 +68,9 @@ class Encrypt(tk.Tk):
     def calculate_size_of_n_segment():
         if (settings.message != '' and settings.wav_file != ''):
             settings.size_of_n_segment = calculate.get_size_of_n_segment(settings.wav_file, settings.message)
+            if settings.size_of_n_segment < 1:
+                settings.size_of_n_segment = ''
+                files.show_error('Колличество кадров в wav-файле меньше кол-ва бит в текстовом файле, вложение невозможно.')
         else:
             files.show_info('вы не загрузили все необходимые файлы!')
 
