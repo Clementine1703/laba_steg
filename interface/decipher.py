@@ -64,7 +64,9 @@ class Decipher(tk.Tk):
     def get_message():
         try:
             result = calculate.get_message(settings.start_container_left_channel_data, settings.result_container_left_channel_data, settings.psp_list, settings.result_container_attachment_depth)
-            name = settings.filename_start_container = filedialog.askopenfilename()
+            name = settings.filename_start_container = tk.filedialog.asksaveasfilename(
+                            filetypes=[("txt file", ".txt")],
+                            defaultextension=".txt", initialfile='extracted_message')
             with open(name, 'wb') as file:
                 file.write(calculate.bin_to_b2a(result))
         except:

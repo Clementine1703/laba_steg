@@ -3,21 +3,23 @@ from tkinter import filedialog
 from utils.encrypt import files, calculate, settings
 from utils import buttons
 import wave
+from scipy.io.wavfile import read
+import matplotlib.pyplot as plt
 
 class Encrypt(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
-        self.geometry('300x300')
+        self.geometry('500x300')
         self.title('Создание стегосистемы')
 
-        buttons.create_button(self, 'Загрузить водяной знак', self.upload_message_file)
-        buttons.create_button(self, 'Загрузить контейнер', self.upload_wav_file)
-        buttons.create_button(self, 'Расчитать колличество отсчетов', self.calculate_size_of_n_segment)
-        buttons.create_button(self, 'Показать колличество отсчетов', self.show_size_of_n_segment)
+        buttons.create_button(self, 'Загрузить сообщение', self.upload_message_file)
+        buttons.create_button(self, 'Загрузить покрывающий объект', self.upload_wav_file)
+        buttons.create_button(self, 'Расчитать размер N-сегментов', self.calculate_size_of_n_segment)
+        buttons.create_button(self, 'Показать размер N-сегментов', self.show_size_of_n_segment)
         buttons.create_button(self, 'Сгенерировать ПСП', self.generate_psp)
-        buttons.create_button(self, 'Сохранить ПСП', self.save_psp)
+        buttons.create_button(self, 'Сохранить ПСП (ключ)', self.save_psp)
         buttons.create_button(self, 'Записать результат в файл', self.write_result)
-
+        buttons.create_button(self, 'Сравнить стеганограммы', self.show_stenogram)
 
 
 
@@ -72,34 +74,102 @@ class Encrypt(tk.Tk):
                 settings.size_of_n_segment = ''
                 files.show_error('Колличество кадров в wav-файле меньше кол-ва бит в текстовом файле, вложение невозможно.')
         else:
-            files.show_info('вы не загрузили все необходимые файлы!')
+            files.show_info('Вы не загрузили все необходимые файлы')
 
     @staticmethod
     def show_size_of_n_segment():
         if settings.size_of_n_segment:
-            files.show_info(settings.size_of_n_segment)
+            files.show_info(f'{settings.size_of_n_segment} кадров')
         else:
-            files.show_info('Колличество сегментов еще не расчитано!')
+            files.show_info('Размер N-сегментов еще не расчитан')
 
     @staticmethod
     def generate_psp():
         try:
             settings.psp_list = files.generate_psp(settings.size_of_n_segment)
         except Exception:
-            files.show_info('Рассчитайте кол-во N-сегментов')
+            files.show_info('Рассчитайте размер N-сегментов')
 
 
         # settings.psp_list = [1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1]
 
     @staticmethod
     def save_psp():
-        filename_psp = filedialog.askopenfilename()
+        filename_psp = tk.filedialog.asksaveasfilename(
+                                        filetypes=[("txt file", ".txt")],
+                                        defaultextension=".txt", initialfile='key')
         with open(filename_psp, 'w') as file:
             file.write(str(settings.psp_list))
+
+    @staticmethod
+    def show_stenogram():
+        audios = []
+
+        try:
+            audio = read(settings.wav_filename)[1]
+            audios.append(audio)
+        except FileNotFoundError:
+            files.show_info('Вы не загрузили покрывающий объект')
+            return 0
+        except Exception:
+            files.show_info('Что-то пошло не так')
+            return 0
+        
+        try:
+            audio = read(settings.result_wav_filename)[1]
+            audios.append(audio)
+        except FileNotFoundError:
+            files.show_info('Вы не выгрузили покрывающий объект с вложенным сообщением')
+            return 0
+        except Exception:
+            files.show_info('Что-то пошло не так')
+            return 0
+
+
+        if not settings.message:
+            files.show_info('Вы не загрузили вкладываемое сообщение или оно пустое')
+
+        fig = plt.figure()
+        fig.subplots_adjust(top=0.8)
+        fig.canvas.manager.set_window_title('Сравнение стеганограмм')
+        axes = fig.subplots(3)
+
+        # plot the first 1024 samples
+        axes[0].plot(audios[0][0:][:, 0])
+        axes[0].set_title("Покрывающий объект")
+        axes[0].get_xaxis().set_visible(False)
+        axes[0].get_yaxis().set_visible(True)
+
+        message_data = [int(settings.message[i]) for i in range(len(settings.message))]
+        message_visualization_size = 500
+        if(message_visualization_size > len(message_data)):
+            message_visualization_size = len(message_data)
+        axes[1].plot(message_data[0:500])
+        axes[1].set_title(f"Вкладываемое сообщение (первые 500 бит)")
+        axes[1].get_xaxis().set_visible(False)
+        axes[1].set_ylim(-6,6)
+
+        axes[2].plot(audios[1][0:][:, 0])
+        axes[2].set_title("Покрывающий объект с вложенным сообщением")
+        axes[2].get_xaxis().set_visible(False)
+        axes[2].get_yaxis().set_visible(True)
+        
+
+        plt.tight_layout()
+        plt.show()
+
 
         
     @staticmethod
     def write_result():
+        if not settings.size_of_n_segment:
+            files.show_info('Вы не расчитали размер N-сегментов')
+            return 0
+        if not settings.psp_list:
+            files.show_info('Вы не сгенерировали псевдослучайную последовательность')
+            return 0
+
+
         #открываем исхоный контейнер и записываем его параметры, для нового контейнера
         params = []
         try:
@@ -108,11 +178,16 @@ class Encrypt(tk.Tk):
                 params = wave_read.getparams()
                 params = list(params)
         except FileNotFoundError as e:
-            files.show_info('Вы не выбрали начальный файл-контейнер')
+            files.show_info('Вы не выбрали покрывающий объект')
             return e
 
 
-        filename_result = filedialog.askopenfilename()
+        
+
+        filename_result = tk.filedialog.asksaveasfilename(
+                            filetypes=[("wave file", ".wav")],
+                            defaultextension=".wav", initialfile='covering_object_with_message')
+        settings.result_wav_filename = filename_result
         with wave.open(filename_result, 'wb') as wave_write:
             wave_write.setparams(params)
             result = files.calculate_result_file(
@@ -124,6 +199,8 @@ class Encrypt(tk.Tk):
             )
             
             wave_write.writeframes(result)
+
+            
 
 
     

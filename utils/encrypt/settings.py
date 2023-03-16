@@ -2,6 +2,8 @@ message_filename = ''
 
 wav_filename = ''
 
+result_wav_filename = ''
+
 #сообщение в двоичном формате
 message = ''
 

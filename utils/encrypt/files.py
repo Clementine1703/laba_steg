@@ -17,7 +17,7 @@ def b2a_bin(data):
 def get_message_content(filename):
     if filename.endswith('.txt'):
         with open(filename, 'rb') as file:
-            content = file.read() + b'\x8a' #добавляем любой символ в конец, т.к. при передаче последний символ теряется
+            content = file.read() #добавляем любой символ в конец, т.к. при передаче последний символ теряется
             content = b2a_bin(content)
             return content
     else:
@@ -40,6 +40,7 @@ def get_wave_file_object(filename):
 def get_left_channel_wav_data(wav_filename):
     with wave.open(wav_filename, 'rb') as wav_file:
         data = wav_file.readframes(wav_file.getnframes())
+        print("Кол-во кадров", wav_file.getnframes())
         data = b2a_bin(data)
 
         # ТЕСТТТТТ:
@@ -58,7 +59,7 @@ def calculate_left_channel_attachment_depth(wav_filename):
         frame = wav_file.readframes(1)
         frame = b2a_bin(frame)
 
-        print(f'1 кадр сообщения: {wav_file.readframes(1)}')
+
         attachment_depth = len(frame)
         print(f'Глубина вложения: {attachment_depth}\n')
         # if wav_file.getnchannels() > 1:
@@ -145,8 +146,11 @@ def calculate_result_file(message, left_channel_wav_data, psp_list, attachment_d
                 result += data
                 # print(f'измененный {psp_index} кадр: {data}\n')
 
+    print('bbb :', len(left_channel_wav_data))
+    print('aaa :', len(result) + len(left_channel_wav_data[len(result):]))
+    print('кол-во кадров', (len(result) + len(left_channel_wav_data[len(result):]))/settings.attachment_depth)
     # данные левого канала в 16-ричном формате + остаточные биты, в которые мы ничего не записывали
-    bytesresult = bin_to_b2a(result) + bin_to_b2a(data[len(result):])
+    bytesresult = bin_to_b2a(result) + bin_to_b2a(left_channel_wav_data[len(result):])
 
     # возвращаем данные левого канала с вложенныи сообщением
     return bytesresult
@@ -155,7 +159,7 @@ def calculate_result_file(message, left_channel_wav_data, psp_list, attachment_d
 def bin_to_b2a(data):
     result = bytearray()
 
-    for byte_index in range(0, len(data) - 8, 8):
+    for byte_index in range(0, len(data), 8):
         moment_result = int(data[byte_index:byte_index+8], 2)
         result.append(moment_result)
 
