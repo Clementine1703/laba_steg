@@ -23,26 +23,77 @@ def get_message(start_container_data, result_container_data, psp_list, attachmen
     depth = attachment_depth
     result = ''
 
+    print(len(result_container_data))
     for bit_index in range(0, len(result_container_data), depth*len(psp_list)):
-        result_frame = result_container_data[bit_index:bit_index+depth]
-        start_frame = start_container_data[bit_index:bit_index+depth]
 
-        raznost = int(result_frame, 2) - int(start_frame, 2)
 
-        if psp_list[0] == 1:
-            if raznost == -1:
-                result += '1'
-                continue
+        # result_frame = result_container_data[bit_index:bit_index+depth]
+        # start_frame = start_container_data[bit_index:bit_index+depth]
+
+        # raznost = int(result_frame, 2) - int(start_frame, 2)
+
+
+
+
+
+        result_n_segment_data = result_container_data[bit_index:bit_index+depth*len(psp_list)]
+        start_n_segment_data = start_container_data[bit_index:bit_index+depth*len(psp_list)]
+
+        result_plus_1_counter = 0
+        result_plus_0_counter = 0
+
+
+        for n_segment_bit_index in range(len(psp_list)):
+            n_segment_res_frame = result_n_segment_data[n_segment_bit_index*depth:n_segment_bit_index*depth+depth]
+            n_segment_start_frame = start_n_segment_data[n_segment_bit_index*depth:n_segment_bit_index*depth+depth]
+
+            if (n_segment_res_frame == '' or n_segment_start_frame == ''):
+                if (result_plus_1_counter >= result_plus_0_counter):
+                    result += '1'
+                else:
+                    result += '0'
+                break
+            
+
+            raznost = int(n_segment_res_frame, 2) - int(n_segment_start_frame, 2)
+            if psp_list[n_segment_bit_index] == 1:
+                if raznost == -1:
+                    result_plus_1_counter += 1
+                    continue
+                elif raznost == 1:
+                    result_plus_0_counter += 1
+                    continue
             else:
-                result += '0'
-                continue
+                if raznost == -1:
+                    result_plus_0_counter += 1
+                    continue
+                elif raznost == 1:
+                    result_plus_1_counter += 1
+                    continue
+
+        
+        if (result_plus_1_counter >= result_plus_0_counter):
+            result += '1'
         else:
-            if raznost == -1:
-                result += '0'
-                continue
-            else:
-                result += '1'
-                continue
+            result += '0'
+        
+
+
+        # if psp_list[bit_index] == 1:
+        #     if raznost == -1:
+        #         result += '1'
+        #         continue
+        #     elif raznost == 1:
+        #         result += '0'
+        #         continue
+        # else:
+        #     if raznost == -1:
+        #         result += '0'
+        #         continue
+        #     elif raznost == 1:
+        #         result += '1'
+        #         continue
+
     return result
 
 

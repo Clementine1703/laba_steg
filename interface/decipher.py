@@ -56,7 +56,6 @@ class Decipher(tk.Tk):
             with open(filename_psp, 'r') as file:
                 psp_str = file.read()
                 settings.psp_list = [int(i) for i in psp_str[1:-1].split(',') ]
-                print(settings.psp_list)
         else:
             calculate.show_info('необходим файл с расширением .txt')
 
@@ -70,7 +69,7 @@ class Decipher(tk.Tk):
             with open(name, 'wb') as file:
                 file.write(calculate.bin_to_b2a(result))
         except:
-            calculate.show_info('Что-то пошло не так')
+            calculate.show_info('Что-то пошло не так. Попробуйте сменить wav-файл.')
 
 
 
