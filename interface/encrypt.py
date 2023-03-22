@@ -14,12 +14,12 @@ class Encrypt(tk.Tk):
 
         buttons.create_button(self, 'Загрузить сообщение', self.upload_message_file)
         buttons.create_button(self, 'Загрузить покрывающий объект', self.upload_wav_file)
-        buttons.create_button(self, 'Расчитать размер N-сегментов', self.calculate_size_of_n_segment)
-        buttons.create_button(self, 'Показать размер N-сегментов', self.show_size_of_n_segment)
+        buttons.create_button(self, 'Расчитать размер N', self.calculate_size_of_n_segment)
+        buttons.create_button(self, 'Показать размер N', self.show_size_of_n_segment)
         buttons.create_button(self, 'Сгенерировать ПСП', self.generate_psp)
         buttons.create_button(self, 'Сохранить ПСП (ключ)', self.save_psp)
         buttons.create_button(self, 'Записать результат в файл', self.write_result)
-        buttons.create_button(self, 'Сравнить стеганограммы', self.show_stenogram)
+        buttons.create_button(self, 'Визуальное сравнение', self.show_stenogram)
 
 
 
@@ -79,16 +79,17 @@ class Encrypt(tk.Tk):
     @staticmethod
     def show_size_of_n_segment():
         if settings.size_of_n_segment:
-            files.show_info(f'{settings.size_of_n_segment} кадров')
+            files.show_info(f'{settings.size_of_n_segment} кадров (в 1 кадре {settings.attachment_depth} бит)')
         else:
-            files.show_info('Размер N-сегментов еще не расчитан')
+            files.show_info('Размер N еще не расчитан')
+            
 
     @staticmethod
     def generate_psp():
         try:
             settings.psp_list = files.generate_psp(settings.size_of_n_segment)
         except Exception:
-            files.show_info('Рассчитайте размер N-сегментов')
+            files.show_info('Рассчитайте размер N')
 
 
         # settings.psp_list = [1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1]
@@ -131,7 +132,7 @@ class Encrypt(tk.Tk):
 
         fig = plt.figure()
         fig.subplots_adjust(top=0.8)
-        fig.canvas.manager.set_window_title('Сравнение стеганограмм')
+        fig.canvas.manager.set_window_title('Визуальное сравнение')
         axes = fig.subplots(3)
 
         # plot the first 1024 samples
@@ -144,8 +145,9 @@ class Encrypt(tk.Tk):
         message_visualization_size = 500
         if(message_visualization_size > len(message_data)):
             message_visualization_size = len(message_data)
+        
         axes[1].plot(message_data[0:500])
-        axes[1].set_title(f"Вкладываемое сообщение (первые 500 бит)")
+        axes[1].set_title(f"Вкладываемое сообщение (первые {message_visualization_size} бит)")
         axes[1].get_xaxis().set_visible(False)
         axes[1].set_ylim(-6,6)
 
@@ -163,10 +165,10 @@ class Encrypt(tk.Tk):
     @staticmethod
     def write_result():
         if not settings.size_of_n_segment:
-            files.show_info('Вы не расчитали размер N-сегментов')
+            files.show_info('Вы не расчитали размер N')
             return 0
         if not settings.psp_list:
-            files.show_info('Вы не сгенерировали псевдослучайную последовательность')
+            files.show_info('Вы не сгенерировали ПСП')
             return 0
 
 
@@ -197,6 +199,8 @@ class Encrypt(tk.Tk):
                 settings.attachment_depth,
                 settings.size_of_n_segment
             )
+
+            print(params)
             
             wave_write.writeframes(result)
 

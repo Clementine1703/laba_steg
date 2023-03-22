@@ -11,10 +11,10 @@ class Decipher(tk.Tk):
         self.geometry('300x300')
         self.title('Расшифровка стегосистемы')
         
-        buttons.create_button(self, 'Загрузить исходный контейнер', self.upload_start_container)
-        buttons.create_button(self, 'Загрузить результирующий контейнер', self.upload_result_container)
-        buttons.create_button(self, 'Загрузить ПСП', self.get_psp)
-        buttons.create_button(self, 'Достать сообщение', self.get_message)
+        buttons.create_button(self, 'Загрузить исходный покрывающий объект', self.upload_start_container)
+        buttons.create_button(self, 'Загрузить стегосообщение', self.upload_result_container)
+        buttons.create_button(self, 'Загрузить ПСП (ключ)', self.get_psp)
+        buttons.create_button(self, 'Извлечь сообщение', self.get_message)
 
 
 
